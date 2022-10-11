@@ -2,15 +2,15 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks
   end
 
   def new
-    @task = Task.new
+    @task = current_user.tasks.new
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
     if @task.save
       redirect_to tasks_path, notice: t('.created')
     else
