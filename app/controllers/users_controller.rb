@@ -37,7 +37,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy!
+    User.transaction do
+      @user.destroy!
+      @user.tasks.destroy_all
+    end
     redirect_to new_user_path, notice: 'アカウントを削除しました'
   end
 
